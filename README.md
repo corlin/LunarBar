@@ -1,5 +1,7 @@
 # 岁时 (LunarBar)
 
+
+
 **岁时 (LunarBar)** 是一款轻巧、纯净的 macOS 菜单栏日历应用。它专为理解中国传统节气与历法而设计，完全离线运行，守护您的隐私与专注。
 
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-EC662F?style=flat&logo=swift&logoColor=white)
@@ -34,6 +36,10 @@
 法定节假日数据感谢以下开源项目：
 *   [NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn)
 
+## 参考
+
+基座版代码来自 https://github.com/bylinxx/MacCalendar 
+
 ## 📄 许可证
 
-本项目开源，具体的 License 请查看仓库中的 LICENSE 文件。
+本项目开源, 基座项目为 https://github.com/bylinxx/MacCalendar ,具体的 License 请查看仓库中的 LICENSE 文件。
