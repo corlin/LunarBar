@@ -1,0 +1,14 @@
+# Xcode
+build/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/xcuserdata/
+DerivedData/
+
+# macOS
+.DS_Store
+
+# Generated Files
+*.dmg
+dmg_temp/
