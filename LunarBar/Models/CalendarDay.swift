@@ -26,6 +26,10 @@ struct CalendarDay: Hashable {
   let ganzhi_month: String?
   /// 日干支
   let ganzhi_day: String?
+  /// 年干支
+  let ganzhi_year: String?
+  /// 生肖
+  let zodiac: String?
   /// 节假日
   let holidays: [String]
   /// 节气
@@ -45,6 +49,8 @@ struct CalendarDay: Hashable {
     full_lunar: String? = nil,
     ganzhi_month: String? = nil,
     ganzhi_day: String? = nil,
+    ganzhi_year: String? = nil,
+    zodiac: String? = nil,
     holidays: [String] = [],
     solar_term: String? = nil,
     offday: Bool? = nil,
@@ -59,6 +65,8 @@ struct CalendarDay: Hashable {
     self.full_lunar = full_lunar
     self.ganzhi_month = ganzhi_month
     self.ganzhi_day = ganzhi_day
+    self.ganzhi_year = ganzhi_year
+    self.zodiac = zodiac
     self.holidays = holidays
     self.solar_term = solar_term
     self.offday = offday

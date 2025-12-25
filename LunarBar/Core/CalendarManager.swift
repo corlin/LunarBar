@@ -429,6 +429,7 @@ class CalendarManager: ObservableObject {
         CalendarDay(
           is_today: is_today, is_currentMonth: is_currentMonth, date: day, short_lunar: short_lunar,
           full_lunar: full_lunar, ganzhi_month: ganzhiMonth, ganzhi_day: ganzhiDay,
+          ganzhi_year: ganzhiYear, zodiac: zodiac,
           holidays: holidays, solar_term: solar_term, offday: offday, events: dayEvents))
     }
 

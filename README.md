@@ -29,7 +29,10 @@
 
 ## 📸 预览
 
-*(在此处添加新的应用截图)*
+![界面1](Screenshot1.png)
+![界面2](Screenshot2.png)
+
+
 
 ## 📅 节假日数据来源
 
@@ -38,8 +41,8 @@
 
 ## 参考
 
-基座版代码来自 https://github.com/bylinxx/MacCalendar 
+初始代码参考来自项目 https://github.com/bylinxx/MacCalendar 
 
 ## 📄 许可证
 
-本项目开源, 基座项目为 https://github.com/bylinxx/MacCalendar ,具体的 License 请查看仓库中的 LICENSE 文件。
+具体的 License 请查看仓库中的 LICENSE 文件。
