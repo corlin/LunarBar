@@ -1,36 +1,39 @@
-## MacCalendar - 完全免费&开源的离线小而美 macOS 菜单栏日历 App
+# 岁时 (LunarBar)
+
+**岁时 (LunarBar)** 是一款轻巧、纯净的 macOS 菜单栏日历应用。它专为理解中国传统节气与历法而设计，完全离线运行，守护您的隐私与专注。
 
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-EC662F?style=flat&logo=swift&logoColor=white)
-[![macOS](https://img.shields.io/badge/macOS-14.0+-green.svg)](https://github.com/bylinxx/MacCalendar/releases/latest)
-![GitHub Release](https://img.shields.io/github/v/release/bylinxx/MacCalendar)
+![macOS](https://img.shields.io/badge/macOS-14.0+-green.svg)
 
+## ✨ 核心亮点
 
-## 主要功能
+*   **纯净体验**: 界面精致，资源占用极低。完全离线，无需网络权限。
+*   **传统历法**: 
+    *   精准的**公历**与**农历**对照。
+    *   **二十四节气**精确展示。
+    *   **天干地支**：包含年、月、日三柱干支的精准算法（基于五虎遁/五鼠遁原理）。
+*   **法定节假日**: 内置 2015-2026 年中国法定节假日及调休安排（数据来源权威）。
+*   **系统融合**: 无缝集成 macOS 系统日历 (EventKit)，直接在菜单栏查看和管理您的日常安排。
+*   **高度定制**:
+    *   菜单栏显示项可配置（图标/时间/日期/农历）。
+    *   支持开机自启。
 
-- 界面简洁精致，轻量化占用资源极小，完全离线不需要联网
+## 🛠️ 技术栈
 
-- 运行后静默显示在菜单栏，右键或者按快捷键[Command + ，]打开设置窗口
+*   **语言**: Swift 5.9+
+*   **UI 框架**: SwiftUI
+*   **架构**: MVVM
+*   **数据**: 本地 JSON 数据源 (不依赖远程 API)
 
-- 中国农历、24节气、大部分节日（公历或农历）
+## 📸 预览
 
-- 中国法定放假安排（自2015年以来）
-  
-- 个性化图标、日历类型、周数等显示
+*(在此处添加新的应用截图)*
 
-- 读取系统日历数据，可按类型筛选显示，支持修改和删除
+## 📅 节假日数据来源
 
-- 自定义菜单栏显示内容，支持图标/日期/时间/自定义格式
+法定节假日数据感谢以下开源项目：
+*   [NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn)
 
-- 输入年/月快捷跳转
+## 📄 许可证
 
-<img width="339" height="409" alt="截屏2025-12-16 23 14 34" src="https://github.com/user-attachments/assets/130caa88-df33-4415-ba0c-8f2818729a51" />
-<img width="335" height="345" alt="截屏2025-12-16 23 12 04" src="https://github.com/user-attachments/assets/6de91408-3a1d-48e7-867b-4803e608019d" />
-<img width="511" height="391" alt="截屏2025-12-19 23 38 07" src="https://github.com/user-attachments/assets/37957e03-7ce2-4868-98a9-c936be371e2b" />
-
-## 中国法定节假日数据来源
-
-- [NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=bylinxx/MacCalendar&type=Timeline)](https://www.star-history.com/#bylinxx/MacCalendar&Timeline)
+本项目开源，具体的 License 请查看仓库中的 LICENSE 文件。
