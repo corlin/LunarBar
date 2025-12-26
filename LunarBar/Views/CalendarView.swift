@@ -75,75 +75,110 @@ struct CalendarView: View {
           startPoint: .leading, endPoint: .trailing)
       )
 
-      // 2. Info Panel
-      HStack(alignment: .center, spacing: 0) {
-        // Left: Big Date
-        VStack(alignment: .leading, spacing: 0) {
-          HStack(alignment: .firstTextBaseline, spacing: 6) {
-            Text("\(calendar.component(.day, from: calendarManager.selectedDay))")
-              .font(.system(size: 32, weight: .bold, design: .rounded))
-              .foregroundColor(.primary)
+      // 2. Info Panel (Huangli Style)
+      if let day = getSelectedCalendarDay() {
+        VStack(spacing: 12) {
+          // A. Big Date & Header
+          HStack(alignment: .lastTextBaseline, spacing: 12) {
+            Text("\(calendar.component(.day, from: day.date!))")
+              .font(.system(size: 48, weight: .bold, design: .rounded))
+              .foregroundColor(isHoliday(day) || isWeekend(day) ? .red : .primary)
 
-            Text(weekdayString(from: calendarManager.selectedDay))
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.secondary)
-          }
-
-          Text(calendarManager.selectedDayLunar)  // Using existing property for now, potentially update logic
-            .font(.system(size: 12))
-            .foregroundColor(.gray)
-        }
-        .padding(.leading, 12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-
-        // Right: Detailed Info (Ganzhi, Solar Term)
-        VStack(alignment: .trailing, spacing: 4) {
-          if let day = getSelectedCalendarDay() {
-            if let ganzhiYear = day.ganzhi_year, let zodiac = day.zodiac {
-              Text("\(ganzhiYear)(\(zodiac))年")
+            VStack(alignment: .leading, spacing: 2) {
+              Text(weekdayString(from: day.date!))
+                .font(.system(size: 16, weight: .medium))
+              Text(day.full_lunar ?? "")
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
+                .lineLimit(1)
             }
+            Spacer()
+          }
+          .padding(.horizontal, 16)
 
-            Text("\(day.ganzhi_month ?? "")月 \(day.ganzhi_day ?? "")日")
-              .font(.system(size: 12))
-              .foregroundColor(.secondary)
+          // B. Yi / Ji Row
+          HStack(spacing: 0) {
+            // Yi
+            HStack(alignment: .top, spacing: 6) {
+              Text("宜")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.white)
+                .padding(4)
+                .background(Circle().fill(Color.green.opacity(0.8)))
 
-            if let solarTerm = day.solar_term {
-              Text(solarTerm)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.red)
+              Text(day.yi.joined(separator: " "))
+                .font(.system(size: 11))
+                .foregroundColor(.primary)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(maxWidth: .infinity)
+            .padding(.trailing, 4)
 
-            // Yi/Ji
-            if !day.yi.isEmpty {
-              Text("宜: " + day.yi.prefix(3).joined(separator: " "))
-                .font(.system(size: 10))
-                .foregroundColor(.green.opacity(0.8))
-                .fixedSize(horizontal: true, vertical: false)
-            }
-            if !day.ji.isEmpty {
-              Text("忌: " + day.ji.prefix(3).joined(separator: " "))
-                .font(.system(size: 10))
-                .foregroundColor(.red.opacity(0.8))
-                .fixedSize(horizontal: true, vertical: false)
-            }
+            Divider().frame(height: 30)
 
+            // Ji
+            HStack(alignment: .top, spacing: 6) {
+              Text(day.ji.joined(separator: " "))
+                .font(.system(size: 11))
+                .foregroundColor(.primary)
+                .lineLimit(2)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+
+              Text("忌")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.white)
+                .padding(4)
+                .background(Circle().fill(Color.red.opacity(0.8)))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.leading, 4)
+          }
+          .padding(.horizontal, 16)
+
+          // C. Lucky Spirits & GanZhi
+          HStack(alignment: .top) {
             // Lucky Spirits
-            if let joy = day.lucky_joy, let wealth = day.lucky_wealth,
-              let fortune = day.lucky_fortune
-            {
-              Text("喜神\(joy) 财神\(wealth) 福神\(fortune)")
+            VStack(alignment: .leading, spacing: 2) {
+              if let joy = day.lucky_joy, let wealth = day.lucky_wealth,
+                let fortune = day.lucky_fortune
+              {
+                Text("喜神\(joy) 财神\(wealth) 福神\(fortune)")
+                  .font(.system(size: 10))
+                  .foregroundColor(.orange)
+              } else {
+                Text("吉神方位计算中...")
+                  .font(.system(size: 10))
+                  .foregroundColor(.secondary)
+              }
+            }
+
+            Spacer()
+
+            // GanZhi
+            VStack(alignment: .trailing, spacing: 2) {
+              Text("\(day.ganzhi_year ?? "")年 \(day.ganzhi_month ?? "")月 \(day.ganzhi_day ?? "")日")
                 .font(.system(size: 10))
-                .foregroundColor(.orange)
-                .fixedSize(horizontal: true, vertical: false)
+                .foregroundColor(.secondary)
+              if let solarTerm = day.solar_term {
+                Text(solarTerm)
+                  .font(.system(size: 10))
+                  .foregroundColor(.red)
+              }
             }
           }
+          .padding(.horizontal, 16)
+          .padding(.bottom, 8)
+
         }
-        .padding(.trailing, 12)
+        .background(Color.white.opacity(0.2))  // Subtle background for the ticket feel
+      } else {
+        // Fallback placeholders
+        VStack {
+          Text("Select a date")
+        }.frame(height: 120)
       }
-      .frame(height: 90)
-      .background(Color.clear)  // Translucent/Glass effect provided by window/parent usually
 
       Divider()
         .opacity(0.5)
@@ -183,6 +218,16 @@ struct CalendarView: View {
       .padding(.bottom, 8)
     }
     .frame(width: 320)  // Set a fixed width for compact menu bar size
+  }
+
+  private func isHoliday(_ day: CalendarDay) -> Bool {
+    return !day.holidays.isEmpty
+  }
+
+  private func isWeekend(_ day: CalendarDay) -> Bool {
+    guard let date = day.date else { return false }
+    let weekday = calendar.component(.weekday, from: date)
+    return weekday == 1 || weekday == 7
   }
 
   private func weekdayString(from date: Date) -> String {
