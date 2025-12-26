@@ -94,7 +94,7 @@ struct CalendarView: View {
             }
             Spacer()
           }
-          .padding(.horizontal, 16)
+          .padding(.horizontal, 12)
 
           // B. Yi / Ji Row
           HStack(spacing: 0) {
@@ -135,7 +135,7 @@ struct CalendarView: View {
             .frame(maxWidth: .infinity)
             .padding(.leading, 4)
           }
-          .padding(.horizontal, 16)
+           .padding(.horizontal, 12)
 
           // C. Lucky Spirits & GanZhi
           HStack(alignment: .top) {
@@ -168,7 +168,7 @@ struct CalendarView: View {
               }
             }
           }
-          .padding(.horizontal, 16)
+          .padding(.horizontal, 12)
           .padding(.bottom, 8)
 
         }
@@ -194,6 +194,7 @@ struct CalendarView: View {
               .frame(maxWidth: .infinity)
           }
         }
+        .padding(.horizontal, 12)
         .frame(height: 24)
         .background(Color.gray.opacity(0.05))
 
@@ -214,6 +215,7 @@ struct CalendarView: View {
             }
           }
         }
+        .padding(.horizontal, 12)
       }
       .padding(.bottom, 8)
     }
