@@ -425,12 +425,23 @@ class CalendarManager: ObservableObject {
 
       let is_currentMonth = calendar.isDate(day, equalTo: self.selectedMonth, toGranularity: .month)
 
+      // Yi/Ji Calculation
+      let cleanYearGanZhi = ganzhiYear.replacingOccurrences(of: "年", with: "")
+      let shenShas = CongChenCalculator.calculateShenSha(
+        monthGanZhi: ganzhiMonth,
+        dayGanZhi: ganzhiDay,
+        yearGanZhi: cleanYearGanZhi
+      )
+      let jianChu = CongChenCalculator.calculateJianChu(monthGanZhi: ganzhiMonth, dayGanZhi: ganzhiDay)
+      let (yi, ji) = CongChenCalculator.getYiJi(shenShas: shenShas, jianChu: jianChu)
+
       newDays.append(
         CalendarDay(
           is_today: is_today, is_currentMonth: is_currentMonth, date: day, short_lunar: short_lunar,
           full_lunar: full_lunar, ganzhi_month: ganzhiMonth, ganzhi_day: ganzhiDay,
           ganzhi_year: ganzhiYear, zodiac: zodiac,
-          holidays: holidays, solar_term: solar_term, offday: offday, events: dayEvents))
+          holidays: holidays, solar_term: solar_term, offday: offday, events: dayEvents,
+          yi: yi, ji: ji))
     }
 
     var _newDays: [CalendarDay] = []

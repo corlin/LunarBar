@@ -38,6 +38,10 @@ struct CalendarDay: Hashable {
   let offday: Bool?
   /// 事件
   let events: [CalendarEvent]
+  /// 宜
+  let yi: [String]
+  /// 忌
+  let ji: [String]
 
   init(
     is_weekNumber: Bool = false,
@@ -54,7 +58,9 @@ struct CalendarDay: Hashable {
     holidays: [String] = [],
     solar_term: String? = nil,
     offday: Bool? = nil,
-    events: [CalendarEvent] = []
+    events: [CalendarEvent] = [],
+    yi: [String] = [],
+    ji: [String] = []
   ) {
     self.is_weekNumber = is_weekNumber
     self.weekNumber = weekNumber
@@ -71,5 +77,7 @@ struct CalendarDay: Hashable {
     self.solar_term = solar_term
     self.offday = offday
     self.events = events
+    self.yi = yi
+    self.ji = ji
   }
 }

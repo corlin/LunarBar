@@ -114,11 +114,25 @@ struct CalendarView: View {
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.red)
             }
+
+            // Yi/Ji
+            if !day.yi.isEmpty {
+              Text("宜: " + day.yi.prefix(3).joined(separator: " "))
+                .font(.system(size: 10))
+                .foregroundColor(.green.opacity(0.8))
+                .fixedSize(horizontal: true, vertical: false)
+            }
+            if !day.ji.isEmpty {
+              Text("忌: " + day.ji.prefix(3).joined(separator: " "))
+                .font(.system(size: 10))
+                .foregroundColor(.red.opacity(0.8))
+                .fixedSize(horizontal: true, vertical: false)
+            }
           }
         }
         .padding(.trailing, 12)
       }
-      .frame(height: 60)
+      .frame(height: 90)
       .background(Color.clear)  // Translucent/Glass effect provided by window/parent usually
 
       Divider()
