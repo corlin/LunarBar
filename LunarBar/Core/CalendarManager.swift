@@ -432,8 +432,12 @@ class CalendarManager: ObservableObject {
         dayGanZhi: ganzhiDay,
         yearGanZhi: cleanYearGanZhi
       )
-      let jianChu = CongChenCalculator.calculateJianChu(monthGanZhi: ganzhiMonth, dayGanZhi: ganzhiDay)
+      let jianChu = CongChenCalculator.calculateJianChu(
+        monthGanZhi: ganzhiMonth, dayGanZhi: ganzhiDay)
       let (yi, ji) = CongChenCalculator.getYiJi(shenShas: shenShas, jianChu: jianChu)
+
+      // Lucky Directions Calculation
+      let luckyDirections = LuckyDirectionHelper.getDirections(dayGanZhi: ganzhiDay)
 
       newDays.append(
         CalendarDay(
@@ -441,7 +445,10 @@ class CalendarManager: ObservableObject {
           full_lunar: full_lunar, ganzhi_month: ganzhiMonth, ganzhi_day: ganzhiDay,
           ganzhi_year: ganzhiYear, zodiac: zodiac,
           holidays: holidays, solar_term: solar_term, offday: offday, events: dayEvents,
-          yi: yi, ji: ji))
+          yi: yi, ji: ji,
+          lucky_joy: luckyDirections?.joy,
+          lucky_wealth: luckyDirections?.wealth,
+          lucky_fortune: luckyDirections?.fortune))
     }
 
     var _newDays: [CalendarDay] = []

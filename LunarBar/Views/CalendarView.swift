@@ -128,6 +128,16 @@ struct CalendarView: View {
                 .foregroundColor(.red.opacity(0.8))
                 .fixedSize(horizontal: true, vertical: false)
             }
+
+            // Lucky Spirits
+            if let joy = day.lucky_joy, let wealth = day.lucky_wealth,
+              let fortune = day.lucky_fortune
+            {
+              Text("喜神\(joy) 财神\(wealth) 福神\(fortune)")
+                .font(.system(size: 10))
+                .foregroundColor(.orange)
+                .fixedSize(horizontal: true, vertical: false)
+            }
           }
         }
         .padding(.trailing, 12)
