@@ -20,150 +20,205 @@ struct CalendarView: View {
   var body: some View {
     VStack(spacing: 0) {
       // 1. Compact Header
+      // 1. New Header Section
       HStack {
-        // Year/Month
-        HStack(spacing: 4) {
-          Text(calendarManager.selectedMonth, format: .dateTime.year())
-            .font(.system(size: 14, weight: .medium))
-          Text(calendarManager.selectedMonth, format: .dateTime.month())
-            .font(.system(size: 14, weight: .medium))
+        // Left: Previous Month
+        Button(action: { calendarManager.goToPreviousMonth() }) {
+          Image(systemName: "chevron.left")
+            .font(.system(size: 14, weight: .bold))
+            .foregroundColor(.white)
+            .frame(width: 32, height: 32)
+            .background(Color.white.opacity(0.2))
+            .cornerRadius(8)
         }
-        .foregroundColor(.white)
-        .onTapGesture {
-          // Simple logic to reset to current month for now, or expand picker later
-          calendarManager.goToCurrentMonth()
-        }
+        .buttonStyle(.plain)
 
         Spacer()
 
-        // Navigation
-        HStack(spacing: 16) {
-          Button(action: { calendarManager.goToPreviousMonth() }) {
-            Image(systemName: "chevron.left")
-              .font(.system(size: 12, weight: .bold))
-              .foregroundColor(.white.opacity(0.8))
-          }
-          .buttonStyle(.plain)
+        // Center: Year & Month
+        Text(
+          "\(calendarManager.selectedMonth, format: .dateTime.year())年 \(calendarManager.selectedMonth, format: .dateTime.month())"
+        )
+        .font(.system(size: 18, weight: .bold))
+        .foregroundColor(.white)
 
+        Spacer()
+
+        // Right: Next Month & Today
+        HStack(spacing: 8) {
           Button(action: { calendarManager.goToNextMonth() }) {
             Image(systemName: "chevron.right")
-              .font(.system(size: 12, weight: .bold))
-              .foregroundColor(.white.opacity(0.8))
+              .font(.system(size: 14, weight: .bold))
+              .foregroundColor(.white)
+              .frame(width: 32, height: 32)
+              .background(Color.white.opacity(0.2))
+              .cornerRadius(8)
           }
           .buttonStyle(.plain)
-        }
 
-        Spacer()
-
-        // Today Button
-        Button("今天") {
-          calendarManager.resetToToday()
+          Button("今天") {
+            calendarManager.resetToToday()
+          }
+          .font(.system(size: 12, weight: .medium))
+          .foregroundColor(.white)
+          .padding(.horizontal, 10)
+          .padding(.vertical, 6)
+          .background(Color.white.opacity(0.2))
+          .cornerRadius(8)
+          .buttonStyle(.plain)
         }
-        .font(.system(size: 12))
-        .foregroundColor(.white)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 2)
-        .background(Color.white.opacity(0.2))
-        .cornerRadius(4)
-        .buttonStyle(.plain)
       }
-      .padding(.horizontal, 12)
-      .frame(height: 36)
+      .padding(.horizontal, 16)
+      .padding(.vertical, 12)
       .background(
         LinearGradient(
-          gradient: Gradient(colors: [Color.red.opacity(0.9), Color.orange.opacity(0.8)]),
+          gradient: Gradient(colors: [Color.red, Color.orange]),
           startPoint: .leading, endPoint: .trailing)
       )
 
-      // 2. Info Panel (Huangli Style)
+      // 2. Info Cards (Card Style)
       if let day = getSelectedCalendarDay() {
         VStack(spacing: 12) {
-          // A. Big Date & Header
-          HStack(alignment: .lastTextBaseline, spacing: 12) {
+
+          // A. Date Info Card
+          HStack(spacing: 16) {
+            // Big Date Number
             Text("\(calendar.component(.day, from: day.date!))")
-              .font(.system(size: 48, weight: .bold, design: .rounded))
-              .foregroundColor(isHoliday(day) || isWeekend(day) ? .red : .primary)
+              .font(.system(size: 64, weight: .bold, design: .rounded))
+              .foregroundColor(Color(hex: "C62828"))  // Dark Red
 
-            VStack(alignment: .leading, spacing: 2) {
-              Text(weekdayString(from: day.date!))
-                .font(.system(size: 16, weight: .medium))
-              Text(day.full_lunar ?? "")
-                .font(.system(size: 12))
-                .foregroundColor(.secondary)
-                .lineLimit(1)
-            }
-            Spacer()
-          }
-          .padding(.horizontal, 12)
-
-          // B. Info Columns (Yi/Ji Left, Lucky Spirits/GanZhi Right)
-          HStack(alignment: .top, spacing: 12) {
-            // Left Column: Yi & Ji
             VStack(alignment: .leading, spacing: 4) {
-              // Yi
-              HStack(alignment: .top, spacing: 4) {
-                Text("宜")
-                  .font(.system(size: 10, weight: .bold))
-                  .foregroundColor(.white)
-                  .padding(4)
-                  .background(Circle().fill(Color.green.opacity(0.8)))
-
-                Text(day.yi.joined(separator: " "))
-                  .font(.system(size: 11))
-                  .foregroundColor(.primary)
-                  .lineLimit(1)
-                  .fixedSize(horizontal: false, vertical: true)
-              }
-
-              // Ji
-              HStack(alignment: .top, spacing: 4) {
-                Text("忌")
-                  .font(.system(size: 10, weight: .bold))
-                  .foregroundColor(.white)
-                  .padding(4)
-                  .background(Circle().fill(Color.red.opacity(0.8)))
-
-                Text(day.ji.joined(separator: " "))
-                  .font(.system(size: 11))
-                  .foregroundColor(.primary)
-                  .lineLimit(1)
-                  .fixedSize(horizontal: false, vertical: true)
-              }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            // Right Column: Lucky Spirits & GanZhi
-            VStack(alignment: .trailing, spacing: 2) {
-              // Lucky Spirits
-              if let joy = day.lucky_joy, let wealth = day.lucky_wealth,
-                let fortune = day.lucky_fortune
-              {
-                Group {
-                  Text("喜神\(joy)")
-                  Text("财神\(wealth)")
-                  Text("福神\(fortune)")
-                }
-                .font(.system(size: 10))
+              Text(weekdayString(from: day.date!))
+                .font(.system(size: 16, weight: .bold))
                 .foregroundColor(.orange)
-              } else {
-                Text("吉神方位计算中...")
-                  .font(.system(size: 10))
+
+              HStack(spacing: 4) {
+                Text(day.full_lunar ?? "")
+                  .font(.system(size: 12))
                   .foregroundColor(.secondary)
               }
 
               if let solarTerm = day.solar_term {
-                Text(solarTerm)
-                  .font(.system(size: 10))
-                  .foregroundColor(.red)
+                HStack(spacing: 4) {
+                  Image(systemName: "bolt.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.orange)
+                  Text("\(solarTerm) \(day.ganzhi_month ?? "") \(day.ganzhi_day ?? "")")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(Color(hex: "B71C1C"))
+                }
+                .padding(.top, 2)
               }
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            Spacer()
           }
-          .padding(.horizontal, 12)
+          .padding(16)
+          .background(Color(hex: "FFF9E8"))
+          .cornerRadius(12)
+          .overlay(
+            RoundedRectangle(cornerRadius: 12)
+              .stroke(Color(hex: "E6DABf"), lineWidth: 1)
+          )
+          .padding(.horizontal, 16)
+
+          // B. Yi / Ji Row Cards
+          HStack(spacing: 12) {
+            // Yi Card
+            HStack(alignment: .top, spacing: 8) {
+              Text("宜")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(.white)
+                .padding(6)
+                .background(Circle().fill(Color(hex: "4CAF50")))
+
+              Text(day.yi.joined(separator: " "))
+                .font(.system(size: 11))
+                .foregroundColor(.primary)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(hex: "E8F5E9"))
+            .cornerRadius(8)
+            .overlay(
+              RoundedRectangle(cornerRadius: 8)
+                .stroke(Color(hex: "C8E6C9"), lineWidth: 1)
+            )
+
+            // Ji Card
+            HStack(alignment: .top, spacing: 8) {
+              Text("忌")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(.white)
+                .padding(6)
+                .background(Circle().fill(Color(hex: "D32F2F")))
+
+              Text(day.ji.isEmpty ? "诸事不宜" : day.ji.joined(separator: " "))
+                .font(.system(size: 11))
+                .foregroundColor(.primary)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(hex: "FFEBEE"))
+            .cornerRadius(8)
+            .overlay(
+              RoundedRectangle(cornerRadius: 8)
+                .stroke(Color(hex: "FFCDD2"), lineWidth: 1)
+            )
+          }
+          .padding(.horizontal, 16)
+
+          // C. Lucky Spirits Card
+          HStack(spacing: 0) {
+            // Joy
+            VStack(spacing: 4) {
+              Text("喜神")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.gray)
+              Text(day.lucky_joy ?? "-")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundColor(.orange)
+            }
+            .frame(maxWidth: .infinity)
+
+            // Wealth
+            VStack(spacing: 4) {
+              Text("财神")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.gray)
+              Text(day.lucky_wealth ?? "-")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundColor(.orange)
+            }
+            .frame(maxWidth: .infinity)
+
+            // Fortune
+            VStack(spacing: 4) {
+              Text("福神")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.gray)
+              Text(day.lucky_fortune ?? "-")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundColor(.orange)
+            }
+            .frame(maxWidth: .infinity)
+          }
+          .padding(.vertical, 12)
+          .background(Color(hex: "FFF8E1"))
+          .cornerRadius(12)
+          .overlay(
+            RoundedRectangle(cornerRadius: 12)
+              .stroke(Color(hex: "FFE0B2"), lineWidth: 1)
+          )
+          .padding(.horizontal, 16)
           .padding(.bottom, 8)
 
         }
-        .background(Color.white.opacity(0.2))  // Subtle background for the ticket feel
       } else {
         // Fallback placeholders
         VStack {
