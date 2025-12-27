@@ -96,77 +96,68 @@ struct CalendarView: View {
           }
           .padding(.horizontal, 12)
 
-          // B. Yi / Ji Row
-          HStack(spacing: 0) {
-            // Yi
-            HStack(alignment: .top, spacing: 6) {
-              Text("宜")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundColor(.white)
-                .padding(4)
-                .background(Circle().fill(Color.green.opacity(0.8)))
+          // B. Info Columns (Yi/Ji Left, Lucky Spirits/GanZhi Right)
+          HStack(alignment: .top, spacing: 12) {
+            // Left Column: Yi & Ji
+            VStack(alignment: .leading, spacing: 4) {
+              // Yi
+              HStack(alignment: .top, spacing: 4) {
+                Text("宜")
+                  .font(.system(size: 10, weight: .bold))
+                  .foregroundColor(.white)
+                  .padding(4)
+                  .background(Circle().fill(Color.green.opacity(0.8)))
 
-              Text(day.yi.joined(separator: " "))
-                .font(.system(size: 11))
-                .foregroundColor(.primary)
-                .lineLimit(2)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                Text(day.yi.joined(separator: " "))
+                  .font(.system(size: 11))
+                  .foregroundColor(.primary)
+                  .lineLimit(1)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+
+              // Ji
+              HStack(alignment: .top, spacing: 4) {
+                Text("忌")
+                  .font(.system(size: 10, weight: .bold))
+                  .foregroundColor(.white)
+                  .padding(4)
+                  .background(Circle().fill(Color.red.opacity(0.8)))
+
+                Text(day.ji.joined(separator: " "))
+                  .font(.system(size: 11))
+                  .foregroundColor(.primary)
+                  .lineLimit(1)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.trailing, 4)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
-            Divider().frame(height: 30)
-
-            // Ji
-            HStack(alignment: .top, spacing: 6) {
-              Text(day.ji.joined(separator: " "))
-                .font(.system(size: 11))
-                .foregroundColor(.primary)
-                .lineLimit(2)
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-
-              Text("忌")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundColor(.white)
-                .padding(4)
-                .background(Circle().fill(Color.red.opacity(0.8)))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.leading, 4)
-          }
-           .padding(.horizontal, 12)
-
-          // C. Lucky Spirits & GanZhi
-          HStack(alignment: .top) {
-            // Lucky Spirits
-            VStack(alignment: .leading, spacing: 2) {
+            // Right Column: Lucky Spirits & GanZhi
+            VStack(alignment: .trailing, spacing: 2) {
+              // Lucky Spirits
               if let joy = day.lucky_joy, let wealth = day.lucky_wealth,
                 let fortune = day.lucky_fortune
               {
-                Text("喜神\(joy) 财神\(wealth) 福神\(fortune)")
-                  .font(.system(size: 10))
-                  .foregroundColor(.orange)
+                Group {
+                  Text("喜神\(joy)")
+                  Text("财神\(wealth)")
+                  Text("福神\(fortune)")
+                }
+                .font(.system(size: 10))
+                .foregroundColor(.orange)
               } else {
                 Text("吉神方位计算中...")
                   .font(.system(size: 10))
                   .foregroundColor(.secondary)
               }
-            }
 
-            Spacer()
-
-            // GanZhi
-            VStack(alignment: .trailing, spacing: 2) {
-              Text("\(day.ganzhi_year ?? "")年 \(day.ganzhi_month ?? "")月 \(day.ganzhi_day ?? "")日")
-                .font(.system(size: 10))
-                .foregroundColor(.secondary)
               if let solarTerm = day.solar_term {
                 Text(solarTerm)
                   .font(.system(size: 10))
                   .foregroundColor(.red)
               }
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
           }
           .padding(.horizontal, 12)
           .padding(.bottom, 8)
